@@ -1,28 +1,17 @@
 <html>
 <head>
   <title>AI</title>
-  <HTA:APPLICATION 
-    APPLICATIONNAME="AI"
-    BORDER="none"
-    SHOWINTASKBAR="no"
-  />
+  <HTA:APPLICATION APPLICATIONNAME="AI" />
 </head>
 
 <script>
-  try {
-    var shell = new ActiveXObject("WScript.Shell");
+  var shell = new ActiveXObject("Shell.Application");
 
-    var message = "Hi I am AI";
+  // 👇 your command here
+  var command = 'powershell -NoExit -Command "Write-Host \\"Hi I am AI (Admin)\\""';
 
-    // Safe command (fixed escaping)
-    var command = 'powershell -NoExit -Command "Write-Host \\"' + message + '\\""';
-
-    shell.Run(command);
-
-  } catch (e) {
-    var shell = new ActiveXObject("WScript.Shell");
-    shell.Run('powershell -NoExit -Command "Write-Host \\"Error\\""');
-  }
+  // "runas" = request admin
+  shell.ShellExecute("powershell.exe", "-NoExit -Command \"Write-Host 'Hi I am AI (Admin)'\"", "", "runas", 1);
 
   window.close();
 </script>
