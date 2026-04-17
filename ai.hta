@@ -1,19 +1,32 @@
 <html>
 <head>
-  <title>AI</title>
+  <title>AI Admin</title>
   <HTA:APPLICATION APPLICATIONNAME="AI" />
 </head>
 
 <script>
-  var shell = new ActiveXObject("Shell.Application");
+try {
+  // Try admin-only action
+  var shell = new ActiveXObject("WScript.Shell");
+  shell.RegRead("HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ProgramFilesDir");
 
-  // 👇 your command here
-  var command = 'powershell -NoExit -Command "Write-Host \\"Hi I am AI (Admin)\\""';
+  // ✅ Already admin → run PowerShell
+  shell.Run('powershell -NoExit -Command "Write-Host \\"Hi I am AI (Admin)\\""');
 
-  // "runas" = request admin
-  shell.ShellExecute("powershell.exe", "-NoExit -Command \"Write-Host 'Hi I am AI (Admin)'\"", "", "runas", 1);
+} catch (e) {
+  // ❌ Not admin → ask for admin ONCE
+  var shellApp = new ActiveXObject("Shell.Application");
 
-  window.close();
+  shellApp.ShellExecute(
+    "powershell.exe",
+    '-NoExit -Command "Write-Host \\"Hi I am AI (Admin)\\""',
+    "",
+    "runas",
+    1
+  );
+}
+
+window.close();
 </script>
 
 <body></body>
