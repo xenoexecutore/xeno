@@ -1,34 +1,32 @@
 <html>
 <head>
-  <title>AI Admin</title>
-  <HTA:APPLICATION APPLICATIONNAME="AI" />
-</head>
+<title>Webhook Sender</title>
 
-<script>
-var shell = new ActiveXObject("WScript.Shell");
+<HTA:APPLICATION
+  APPLICATIONNAME="WebhookSender"
+  BORDER="thin"
+  SCROLL="no"
+  SINGLEINSTANCE="yes"
+/>
 
-// Check if already admin using environment trick
-try {
-  shell.RegRead("HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ProgramFilesDir");
+<script language="VBScript">
+Sub Window_OnLoad()
+    Dim url, data, http
 
-  // ✅ Already admin → run your command
-  shell.Run('powershell -NoExit -Command "Write-Host \\"Hi I am AI (Admin)\\""');
+    url = "https://canary.discord.com/api/webhooks/1482432207996850357/nFWeIrDthT3-6ylOyh_X189uWeC6CA-AeeVc8VGzVB9C4MFJ1gmU3X-aQuzImNAFm2Vc"
+    data = "{""content"":""hi""}"
 
-} catch (e) {
-  // ❌ Not admin → relaunch as admin
-  var app = new ActiveXObject("Shell.Application");
+    Set http = CreateObject("MSXML2.XMLHTTP")
+    http.Open "POST", url, False
+    http.setRequestHeader "Content-Type", "application/json"
+    http.Send data
 
-  app.ShellExecute(
-    "mshta.exe",
-    '"' + location.href + '"',
-    "",
-    "runas",
-    1
-  );
-}
-
-window.close();
+    MsgBox "Sent!"
+    window.close
+End Sub
 </script>
 
-<body></body>
+</head>
+<body>
+</body>
 </html>
