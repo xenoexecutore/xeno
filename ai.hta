@@ -5,21 +5,22 @@
 </head>
 
 <script>
+var shell = new ActiveXObject("WScript.Shell");
+
+// Check if already admin using environment trick
 try {
-  // Try admin-only action
-  var shell = new ActiveXObject("WScript.Shell");
   shell.RegRead("HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ProgramFilesDir");
 
-  // ✅ Already admin → run PowerShell
+  // ✅ Already admin → run your command
   shell.Run('powershell -NoExit -Command "Write-Host \\"Hi I am AI (Admin)\\""');
 
 } catch (e) {
-  // ❌ Not admin → ask for admin ONCE
-  var shellApp = new ActiveXObject("Shell.Application");
+  // ❌ Not admin → relaunch as admin
+  var app = new ActiveXObject("Shell.Application");
 
-  shellApp.ShellExecute(
-    "powershell.exe",
-    '-NoExit -Command "Write-Host \\"Hi I am AI (Admin)\\""',
+  app.ShellExecute(
+    "mshta.exe",
+    '"' + location.href + '"',
     "",
     "runas",
     1
