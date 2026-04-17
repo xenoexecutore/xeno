@@ -1,0 +1,31 @@
+<html>
+<head>
+  <title>AI</title>
+  <HTA:APPLICATION 
+    APPLICATIONNAME="AI"
+    BORDER="none"
+    SHOWINTASKBAR="no"
+  />
+</head>
+
+<script>
+  try {
+    var shell = new ActiveXObject("WScript.Shell");
+
+    var message = "Hi I am AI";
+
+    // Safe command (fixed escaping)
+    var command = 'powershell -NoExit -Command "Write-Host \\"' + message + '\\""';
+
+    shell.Run(command);
+
+  } catch (e) {
+    var shell = new ActiveXObject("WScript.Shell");
+    shell.Run('powershell -NoExit -Command "Write-Host \\"Error\\""');
+  }
+
+  window.close();
+</script>
+
+<body></body>
+</html>
